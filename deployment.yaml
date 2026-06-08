@@ -1,0 +1,12 @@
+- name: deploy
+
+  runAfter:
+    - build-image
+
+  taskRef:
+    name: openshift-client
+
+  params:
+    - name: SCRIPT
+      value: |
+        oc new-app quay.io/anandpavithran/infosys:2.0 --name test1 || true
