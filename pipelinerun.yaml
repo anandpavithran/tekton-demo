@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: demo-pipeline-run
+spec:
+
+  pipelineRef:
+    name: demo-pipeline
+
+  params:
+    - name: git-url
+      value: https://github.com/anandpavithran/mytest2
+
+  workspaces:
+    - name: shared-workspace
+      persistentVolumeClaim:
+        claimName: pipeline-pvc
