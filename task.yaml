@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: print-message
+
+spec:
+  params:
+    - name: message
+
+  steps:
+    - name: print
+
+      image: registry.access.redhat.com/ubi9/ubi
+
+      script: |
+        echo "$(params.message)"
