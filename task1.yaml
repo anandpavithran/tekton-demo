@@ -1,0 +1,10 @@
+tasks:
+
+- name: hello
+
+  taskRef:
+    name: print-message
+
+  params:
+    - name: message
+      value: "Hello OpenShift Pipeline"
