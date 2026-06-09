@@ -1,0 +1,18 @@
+Repo- https://github.com/anandpavithran/tekton-demo
+STEP-1
+Create task 
+tkn task list
+oc get task
+oc apply -f task0.yaml
+oc apply -f task1.yaml
+oc apply -f task2.yaml
+List task
+tkn task list
+oc get task
+Test the task individualy
+tkn start task-name
+Check the logs
+tkn taskrun logs xXXXXX -f -n namespace [will show in previous output]
+Create a shared storage for tekton
+oc apply -f pvc.yaml
+Create a simple pipeline
