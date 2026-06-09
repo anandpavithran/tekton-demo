@@ -1,0 +1,43 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: simple-pipeline1
+spec:
+
+  workspaces:
+    - name: shared-workspace
+
+  params:
+    - name: git-url
+      type: string
+
+  tasks:
+
+    - name: task1
+
+      taskRef:
+        name: print-message1
+
+      params:
+        - name: message
+          value: $(params.git-url)
+
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+
+    - name: task2
+
+      runAfter:
+        - clone-source
+
+      taskRef:
+        name: print-message2
+
+      params:
+        - name: IMAGE
+          value: default-route-openshift-image-registry.apps.ocp4.example.com/test100/test1
+
+      workspaces:
+        - name: source
+          workspace: shared-workspace
