@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: demo-pipeline
+spec:
+
+  workspaces:
+    - name: shared-workspace
+
+  params:
+    - name: git-url
+      type: string
+
+  tasks:
+    - name: hello
+  taskRef:
+    name: print-message
+  params:
+    - name: message
+      value: "Hello Openshift Pipeline"    
+

@@ -17,6 +17,10 @@ spec:
 
       taskRef:
         name: git-clone
+        resolver: cluster  
+        params:
+        - name: namespace
+          value: openshift-pipelines
 
       params:
         - name: url
@@ -33,6 +37,7 @@ spec:
 
       taskRef:
         name: buildah
+        resolver: cluster  
 
       params:
         - name: IMAGE
