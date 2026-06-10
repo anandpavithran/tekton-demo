@@ -43,3 +43,10 @@ tkn taskrun describe name-x-x-x
 ####################################
 Create a shared storage for tekton
 oc apply -f pvc.yaml
+
+###########################################################################################
+To build a container image from a Git repository using a Containerfile and deploy it directly onto OpenShift, you can construct a Pipeline utilizing OpenShift's built-in ClusterTasks.
+1]git-clone (ClusterTask) to pull down your code into a shared workspace.
+2] buildah (ClusterTask) to detect and execute the build based on your Containerfile.
+3] openshift-client (ClusterTask) to deploy the newly built image as a live OpenShift Deployment
+
