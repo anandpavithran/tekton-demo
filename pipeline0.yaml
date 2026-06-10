@@ -1,27 +1,22 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: simple-pipeline1
+  name: simple-pipeline
 spec:
 
-
   tasks:
-
     - name: task1
-      runAfter: 
-        - task2
       taskRef:
         name: print-message1
+      runAfter:
+      - task2
       params:
-        - name: message
-          value: "Local Message1"
-
-
+      - name: message
+        value: "Hello Openshift Pipeline-1"    
     - name: task2
-
       taskRef:
         name: print-message2
       params:
-        - name: message
-          value: "Local Message2"
+      - name: message
+        value: "Hello Openshift Pipeline-2"    
 

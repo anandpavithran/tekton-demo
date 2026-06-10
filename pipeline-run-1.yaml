@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: param-test-run-
+spec:
+  pipelineRef:
+    name: simple-pipeline1 
+  params:
+    - name: global-welcome-msg
+      value: "Welcome to OpenShift Pipelines!" # The actual text string
+

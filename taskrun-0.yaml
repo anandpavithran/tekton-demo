@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: my-task-test-run-
+spec:
+  taskRef:
+    name: print-message1
+  params:
+    - name: message
+      value: "Using TASKRUN"
