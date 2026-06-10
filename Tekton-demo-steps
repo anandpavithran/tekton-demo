@@ -5,14 +5,41 @@ tkn task list
 oc get task
 oc apply -f task0.yaml
 oc apply -f task1.yaml
-oc apply -f task2.yaml
+
 List task
 tkn task list
 oc get task
 Test the task individualy
 tkn start task-name
+tkn taskrun list
 Check the logs
 tkn taskrun logs xXXXXX -f -n namespace [will show in previous output]
+#################################
+Alternate method to run task
+##################################
+oc create -f taskrun-0.yaml
+tkn run list
+tkn taskrun describe name-x-x
+#################################
+Create a simple pipeline
+###############################
+oc apply -f pipeline0.yaml
+tkn pipeline list
+tkn pipeline describe name-x-x
+oc apply -f pipeline-run-0.yaml
+tkn pipelinerun list
+tkn pipeline describe name-x-x-x
+tkn taskrun list
+tkn taskrun describe name-x-x-x
+###################################
+c apply -f pipeline1.yaml
+tkn pipeline list
+tkn pipeline describe name-x-x
+oc apply -f pipeline-run-1.yaml
+tkn pipelinerun list
+tkn pipeline describe name-x-x-x
+tkn taskrun list
+tkn taskrun describe name-x-x-x
+####################################
 Create a shared storage for tekton
 oc apply -f pvc.yaml
-Create a simple pipeline
