@@ -1,0 +1,78 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: containerfile-deploy-pipeline
+spec:
+  workspaces:
+    - name: shared-workspace
+  params:
+    - name: git-url
+      type: string
+    - name: image-name
+      type: string
+    - name: deployment-name
+      type: string
+      default: "my-web-app"
+  tasks:
+    # Task 1: Clone the Git Repository using the Cluster Resolver
+    - name: clone-repo
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: repo-url
+          value: $(params.git-url)
+        - name: revision
+          value: master
+
+    # Task 2: Build the image
+    - name: build-image
+      runAfter:
+        - clone-repo
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: buildah
+          - name: namespace
+            value: openshift-pipelines # The central namespace where OpenShift hosts cluster tasks
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+      params:
+        - name: IMAGE
+          value: $(params.image-name)
+        - name: DOCKERFILE
+          value: "./Dockerfile"
+        - name: CONTEXT
+          value: work/output/source/myest2
+
+    # Task 3: Deploy the image
+    - name: deploy-to-openshift
+      runAfter:
+        - build-image
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: openshift-client
+          - name: namespace
+            value: openshift-pipelines # The central namespace where OpenShift hosts cluster tasks
+      params:
+        - name: SCRIPT
+          value: |
+            echo "Deploying application to OpenShift..."
+            if ! oc get deployment $(params.deployment-name) > /dev/null 2>&1; then
+              oc create deployment $(params.deployment-name) --image=$(params.image-name)
+              oc expose deployment $(params.deployment-name) --port=8080 --type=ClusterIP
+              oc create route edge --service=$(params.deployment-name)
+            else
+              oc set image deployment/$(params.deployment-name) $(params.deployment-name)=$(params.image-name)
+            fi
+

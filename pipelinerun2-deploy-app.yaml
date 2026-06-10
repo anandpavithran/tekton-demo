@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: webapp-deploy-run-
+spec:
+  pipelineRef:
+    name: containerfile-deploy-pipeline
+  params:
+    - name: git-url
+      value: "https://github.com/anandpavithran/mytest2"
+    - name: image-name
+      value: "image-registry.openshift-image-registry.svc:5000/test100/my-web-app:latest" 
+    - name: deployment-name
+      value: "my-web-app"
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+
